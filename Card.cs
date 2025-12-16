@@ -1,9 +1,22 @@
-﻿public class Card
+﻿/// <summary>
+/// トランプのカードを表すクラス
+/// </summary>
+public class Card
 {
-    public string Rank {get;}   // A, 2, 3, ..., K(変更できない)
-    public int Value {get;}     // 点数(変更できない)
+    /// <summary>
+    /// カードのランク(A,2~10,J,Q,K)
+    /// </summary>
+    public string Rank {get;}
 
-    // コンストラクタ：カードの生成時ランクを渡す
+    /// <summary>
+    /// カードの点数(A=1, 数字はそのまま, J/Q/K=10) 
+    /// </summary>
+    public int Value {get;}  
+
+    /// <summary>
+    /// コンストラクタ:カードの生成時ランクを渡す
+    /// </summary>
+    /// <param name="rank">カードのランク</param>
     public Card(string rank)
     {
         Rank = rank;
@@ -13,15 +26,19 @@
     /// <summary>
     /// 点数を計算するメソッド
     /// </summary>
-    /// <param name="rank"></param>
-    /// <returns></returns>
+    /// <param name="rank">カードのランク</param>
+    /// <returns>カードの点数</returns>
     private int CalculateValue(string rank)
     {
-        if (rank == "A") return 1;       // Aは1点（）
+        if (rank == "A") return 1;
         if (rank == "J" || rank == "Q" || rank == "K") return 10;
-        return int.Parse(rank);          // 2〜10はそのまま数値
+        return int.Parse(rank);
     }
-    // カードを文字列として表示
+
+    /// <summary>
+    /// カードを文字列として表示
+    /// </summary>
+    /// <returns>カードのランク</returns> 
     public override string ToString()
     {
         return Rank;
