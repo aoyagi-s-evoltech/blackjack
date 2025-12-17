@@ -5,13 +5,18 @@
         Deck deck = new Deck();
         deck.Shuffle();
 
-        Player player = new Player();
+        Dealer dealer = new Dealer();
 
         // 最初にカードを2枚配る
-        player.AddCard(deck.DrawCard());
-        player.AddCard(deck.DrawCard());
+        dealer.AddCard(deck.DrawCard());
+        dealer.AddCard(deck.DrawCard());
 
-        // プレイヤーのターン開始（デッキを渡す）
-        player.PlayerTurn(deck);
+        Console.WriteLine($"ディーラーの点数: {dealer.CalculateHandValue()}");
+
+        dealer.PlayTurn(deck);
+
+        // 終了時の点数17点以上であればOK
+        Console.WriteLine($"ディーラーの点数: {dealer.CalculateHandValue()}");
+        Console.WriteLine("ディーラーのターン終了");
     }
 }
