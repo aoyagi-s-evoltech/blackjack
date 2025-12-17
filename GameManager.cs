@@ -72,4 +72,33 @@ public class GameManager
         // 出力
         Console.WriteLine(sb.ToString());
     }
+
+    /// <summary>
+    /// ディーラーのターンを進める
+    /// </summary>
+    public void DealerTurn()
+    {
+        var sb = new StringBuilder();
+
+        // 伏せていたカードを公開
+        sb.AppendLine("ディーラーのカードを公開します:");
+        foreach (Card card in Dealer.Hand)
+        {
+            sb.AppendLine(card.ToString());
+        }
+
+        // 手札の合計が17以上になるまでカードを引き続ける
+        Dealer.PlayTurn(Deck);
+
+        // 手札を全て開示し、点数を表示
+        sb.AppendLine("ディーラーの手札:");
+        foreach (Card card in Dealer.Hand)
+        {
+            sb.AppendLine(card.ToString());
+        }
+        sb.AppendLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
+
+        // 出力
+        Console.WriteLine(sb.ToString());
+    }
 }
