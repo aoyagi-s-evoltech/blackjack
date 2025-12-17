@@ -1,8 +1,16 @@
+using System.Diagnostics.Contracts;
 /// <summary>
-/// ディーラークラス
+/// ディーラーの行動
+/// 手札の合計が17以上になるまでカードを引き続ける
 /// </summary>
+/// <param name="deck">カードを引くデッキ</param>
 public class Dealer : PlayerBase
 {
-    // 今は特別な処理なし
-    // 将来的に「17以上でストップ」のルールを追加予定
+    public void PlayTurn(Deck deck)
+    {
+        while(CalculateHandValue() < 17)
+        {
+            AddCard(deck.DrawCard());
+        }
+    }
 }
