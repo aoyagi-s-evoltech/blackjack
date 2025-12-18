@@ -74,6 +74,14 @@ public class GameManager
     }
 
     /// <summary>
+    /// プレイヤーのターンを進める
+    /// </summary>
+    public void PlayerTurn()
+    {
+        Player.PlayerTurn(Deck);
+    }
+
+    /// <summary>
     /// ディーラーのターンを進める
     /// </summary>
     public void DealerTurn()
