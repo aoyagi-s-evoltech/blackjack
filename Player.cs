@@ -11,7 +11,9 @@ public class Player : PlayerBase
     /// プレイヤーのターンを進める
     /// 入力(yes/no)に応じて「ヒット(カードを引く)」もしくは「スタンド(カードを引かない)を選択できる」
     /// </summary>
-    public void PlayerTurn(Deck deck)
+    /// <param name="deck">カードを引くデッキ</param>
+    /// <returns>true: バーストせずターン終了 / false: バーストして負け</returns>
+    public bool PlayerTurn(Deck deck)
     {
         Console.WriteLine("=== あなたのターンです ===");
         ShowHandStatus("プレイヤーのターン開始: ");
@@ -25,10 +27,16 @@ public class Player : PlayerBase
             // yes: ヒットを選んだ場合(カードを引く)
             if(input != null && input.ToLower() == "yes")
             {
+                Hit(deck);
+
                 // バーストしたら終了
-                if(Hit(deck)) break;
+                if(IsBurst())
+                {
+                    Console.WriteLine("21点を超えてしまいました！プレイヤーの負けです");
+                    return false;
+                }
             }
-            // No: スタンドを選んだ場合(カードを引かない)
+            // no: スタンドを選んだ場合(カードを引かない)
             else if(input != null && input.ToLower() == "no")
             {
                 // スタンド（ターン終了）
@@ -41,6 +49,8 @@ public class Player : PlayerBase
                 Console.WriteLine("入力が正しくありません。yes または no を入力してください。");
             }
         }
+        
+        return true;
     }
 
     /// <summary>
@@ -61,19 +71,12 @@ public class Player : PlayerBase
     }
 
     /// <summary>
-    /// カードを引いて状態を更新、バースト判定
+    /// カードを引く
     /// </summary>
-    /// <returns>true: バーストしているので負け/false: 続ける</returns>
-    private bool Hit(Deck deck)
+    /// <param name="deck">カードを引くデッキ</param>
+    private void Hit(Deck deck)
     {
         AddCard(deck.DrawCard());
         ShowHandStatus();
-
-        if (CalculateHandValue() > 21)
-        {
-            Console.WriteLine("21点を超えてしまいました！プレイヤーの負けです");
-            return true;
-        }
-        return false;
     }
 }

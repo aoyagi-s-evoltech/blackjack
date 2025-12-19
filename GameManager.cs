@@ -78,16 +78,16 @@ public class GameManager
     /// <summary>
     /// プレイヤーのターンを進める
     /// </summary>
-    public void PlayerTurn()
+    public bool PlayerTurn()
     {
         Console.WriteLine("⭐︎⭐︎⭐︎あなたのターンです⭐︎⭐︎⭐︎");
-        Player.PlayerTurn(Deck);
+        return Player.PlayerTurn(Deck);
     }
 
     /// <summary>
     /// ディーラーのターンを進める
     /// </summary>
-    public void DealerTurn()
+    public bool DealerTurn()
     {
         Console.WriteLine("⭐︎⭐︎⭐︎ディーラーのターンです⭐︎⭐︎⭐︎");
         var sb = new StringBuilder();
@@ -99,19 +99,20 @@ public class GameManager
             sb.AppendLine(card.ToString());
         }
 
-        // 手札の合計が17以上になるまでカードを引き続ける
-        Dealer.PlayTurn(Deck);
+        // ディーラーのターンを実行
+        bool DealerAlive = Dealer.PlayTurn(Deck);
 
-        // 手札を全て開示し、点数を表示
-        sb.AppendLine("ディーラーの手札:");
-        foreach (Card card in Dealer.Hand)
+        // ディーラーがバーストしていなければ、最終的な手札と点数を表示
+        if(DealerAlive)
         {
-            sb.AppendLine(card.ToString());
+            sb.AppendLine("ディーラーの手札:");
+            foreach (Card card in Dealer.Hand)
+            {
+                sb.AppendLine(card.ToString());
+            }
+            sb.AppendLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
         }
-        sb.AppendLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
-
-        // 出力
-        Console.WriteLine(sb.ToString());
+        return DealerAlive;
     }
 
     /// <summary>

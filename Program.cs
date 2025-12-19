@@ -2,17 +2,25 @@
 {
     static void Main(string[] args)
     {
-        bool playAgain = true;
+        bool PlayAgain = true;
 
-        while (playAgain)
+        while (PlayAgain)
         {
             GameManager game = new GameManager();
 
             game.StartGame();
-            game.PlayerTurn();
-            game.DealerTurn();
-            game.JudgeWinner();
+            bool PlayerAlive = game.PlayerTurn();
 
+            if(PlayerAlive)
+            {
+                bool DealerAlive = game.DealerTurn();
+
+                if(DealerAlive)
+                {
+                    game.JudgeWinner();
+                }            
+            }
+            
             Console.WriteLine("\nもう一度遊びますか？ (yes/no)");
             string input = Console.ReadLine().ToLower();
 
@@ -22,7 +30,7 @@
             }
             else
             {
-                playAgain = false;
+                PlayAgain = false;
                 Console.WriteLine("ゲームを終了します。また遊んでね！");
             }
         }       

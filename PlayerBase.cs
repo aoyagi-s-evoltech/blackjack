@@ -30,4 +30,14 @@ public class PlayerBase
         }
         return total;
     }
+    
+    /// <summary>
+    /// バースト判定を行う
+    /// 手札の合計が21点以上の場合trueを返す
+    /// </summary>
+    /// <returns>true: バースト/false: 続行可能</returns>
+    public bool IsBurst()
+    {
+        return CalculateHandValue() > 21;
+    }
 }
