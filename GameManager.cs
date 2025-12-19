@@ -47,6 +47,8 @@ public class GameManager
     /// </summary>
     public void StartGame()
     {
+        Console.WriteLine("♧♤ブラックジャックへようこそ！");
+        Console.WriteLine("ゲームを開始します\n");
         // プレイヤーに2枚
         DealCards(Player, 2);
         // ディーラーに2枚
@@ -78,6 +80,7 @@ public class GameManager
     /// </summary>
     public void PlayerTurn()
     {
+        Console.WriteLine("⭐︎⭐︎⭐︎あなたのターンです⭐︎⭐︎⭐︎");
         Player.PlayerTurn(Deck);
     }
 
@@ -86,6 +89,7 @@ public class GameManager
     /// </summary>
     public void DealerTurn()
     {
+        Console.WriteLine("⭐︎⭐︎⭐︎ディーラーのターンです⭐︎⭐︎⭐︎");
         var sb = new StringBuilder();
 
         // 伏せていたカードを公開
@@ -120,11 +124,11 @@ public class GameManager
 
         if(PlayerScore > 21)
         {
-            Console.WriteLine("プレイヤーはバストした。ディーラーの勝ち！");
+            Console.WriteLine("プレイヤーはバーストした。ディーラーの勝ち！");
         }
         else if (DealerScore > 21)
         {
-            Console.WriteLine("ディーラーはバスト！プレイヤーの勝ち！");
+            Console.WriteLine("ディーラーはバースト！プレイヤーの勝ち！");
         }
         else if (PlayerScore > DealerScore)
         {

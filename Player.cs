@@ -13,6 +13,7 @@ public class Player : PlayerBase
     /// </summary>
     public void PlayerTurn(Deck deck)
     {
+        Console.WriteLine("=== あなたのターンです ===");
         ShowHandStatus("プレイヤーのターン開始: ");
 
         // プレイヤーがヒットするかスタンドするかを選択
@@ -24,7 +25,7 @@ public class Player : PlayerBase
             // yes: ヒットを選んだ場合(カードを引く)
             if(input != null && input.ToLower() == "yes")
             {
-                // バストしたら終了
+                // バーストしたら終了
                 if(Hit(deck)) break;
             }
             // No: スタンドを選んだ場合(カードを引かない)
@@ -60,9 +61,9 @@ public class Player : PlayerBase
     }
 
     /// <summary>
-    /// カードを引いて状態を更新、バスト判定
+    /// カードを引いて状態を更新、バースト判定
     /// </summary>
-    /// <returns>true: バストしているので負け/false: 続ける</returns>
+    /// <returns>true: バーストしているので負け/false: 続ける</returns>
     private bool Hit(Deck deck)
     {
         AddCard(deck.DrawCard());
