@@ -1,6 +1,6 @@
 using System.Text;
 /// <summary>
-/// ディーラーの行動
+/// ディーラーの行動を管理するクラス
 /// 手札の合計が17以上になるまでカードを引き続ける
 /// </summary>
 public class Dealer : PlayerBase
@@ -19,6 +19,7 @@ public class Dealer : PlayerBase
         while(CalculateHandValue() < 17)
         {
             Console.WriteLine("ディーラーはカードを引きます");
+            // デッキから1枚引いて手札に追加
             AddCard(deck.DrawCard());
             ShowHandStatus();
 
@@ -42,10 +43,12 @@ public class Dealer : PlayerBase
         var sb = new StringBuilder();
         sb.AppendLine(header);
 
+        // 手札のカードを表示
         foreach (Card card in Hand)
         {
             sb.AppendLine(card.ToString());
         }
+        // 現在の合計点を表示
         sb.AppendLine($"ディーラーの点数: {CalculateHandValue()}");
         Console.WriteLine(sb.ToString());
     }

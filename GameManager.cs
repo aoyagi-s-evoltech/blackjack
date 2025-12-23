@@ -6,6 +6,15 @@ using System.Text;
 public class GameManager
 
 {
+    private const string WelcomeMessage = "==ブラックジャックへようこそ！==";
+    private const string StartMessage = "ゲームを開始します\n";
+    private const string PlayerHandLabel = "プレイヤーの手札:";
+    private const string DealerHandLabel = "ディーラーの手札:";
+    private const string HiddenCardMessage = "もう1枚は伏せられています";
+    private const string PlayerTurnMessage = "---あなたのターンです---";
+    private const string DealerTurnMessage = "---ディーラーのターンです---";
+
+
     /// <summary>
     /// ゲーム開始時に配る最初の手札の枚数
     /// </summary>
