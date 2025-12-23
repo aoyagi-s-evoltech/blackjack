@@ -1,4 +1,3 @@
-using System.Runtime.CompilerServices;
 using System.Text;
 
 /// <summary>
@@ -15,7 +14,7 @@ public class Player : PlayerBase
     /// <returns>true: バーストせずターン終了 / false: バーストして負け</returns>
     public bool PlayerTurn(Deck deck)
     {
-        Console.WriteLine("=== あなたのターンです ===");
+        Console.WriteLine("--- プレイヤーのターンです ---");
         ShowHandStatus("プレイヤーのターン開始: ");
 
         // プレイヤーがヒットするかスタンドするかを選択
@@ -32,7 +31,7 @@ public class Player : PlayerBase
                 // バーストしたら終了
                 if(IsBurst())
                 {
-                    Console.WriteLine("21点を超えてしまいました！プレイヤーの負けです");
+                    Console.WriteLine("21点を超えました！プレイヤーの負けです");
                     return false;
                 }
             }

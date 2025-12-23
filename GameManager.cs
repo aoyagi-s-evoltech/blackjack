@@ -4,7 +4,13 @@ using System.Text;
 /// ゲームの進行を管理するクラス
 /// </summary>
 public class GameManager
+
 {
+    /// <summary>
+    /// ゲーム開始時に配る最初の手札の枚数
+    /// </summary>
+    private const int InitialHandCount = 2;
+
     /// <summary>
     /// ゲームで使用するデッキ
     /// </summary>
@@ -47,12 +53,12 @@ public class GameManager
     /// </summary>
     public void StartGame()
     {
-        Console.WriteLine("♧♤ブラックジャックへようこそ！");
+        Console.WriteLine("==ブラックジャックへようこそ！==");
         Console.WriteLine("ゲームを開始します\n");
         // プレイヤーに2枚
-        DealCards(Player, 2);
+        DealCards(Player, InitialHandCount);
         // ディーラーに2枚
-        DealCards(Dealer, 2);
+        DealCards(Dealer, InitialHandCount);
 
         // 出力用のStringBuilderを用意
         var sb = new StringBuilder();
@@ -80,7 +86,7 @@ public class GameManager
     /// </summary>
     public bool PlayerTurn()
     {
-        Console.WriteLine("⭐︎⭐︎⭐︎あなたのターンです⭐︎⭐︎⭐︎");
+        Console.WriteLine("---あなたのターンです---");
         return Player.PlayerTurn(Deck);
     }
 
@@ -89,7 +95,7 @@ public class GameManager
     /// </summary>
     public bool DealerTurn()
     {
-        Console.WriteLine("⭐︎⭐︎⭐︎ディーラーのターンです⭐︎⭐︎⭐︎");
+        Console.WriteLine("---ディーラーのターンです---");
         var sb = new StringBuilder();
 
         // 伏せていたカードを公開
@@ -125,7 +131,7 @@ public class GameManager
 
         if(PlayerScore > 21)
         {
-            Console.WriteLine("プレイヤーはバーストした。ディーラーの勝ち！");
+            Console.WriteLine("プレイヤーはバースト！。ディーラーの勝ち！");
         }
         else if (DealerScore > 21)
         {

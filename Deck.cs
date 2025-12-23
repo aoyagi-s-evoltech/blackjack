@@ -6,10 +6,12 @@ using System.Collections.Generic;
 /// </summary>
 public class Deck
 {
+    private const int SuitCount = 4;
+
     /// <summary>
     /// デッキの中身(変更できない)
     /// </summary>
-    private List<Card> cards = new List<Card>();
+    private List<Card> Cards = new List<Card>();
     /// <summary>
     /// 山札の残り枚数を返すプロパティ
     /// </summary>
@@ -17,7 +19,7 @@ public class Deck
     {
         get
         {
-            return cards.Count;
+            return Cards.Count;
         }
     }
     /// <summary>
@@ -35,41 +37,41 @@ public class Deck
     private void GenerateCards()
     {  
         string[] ranks = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
-        // スート分の4回繰り返す(♡、♤、♧、♢)
-        for (int suitIndex = 0; suitIndex < 4; suitIndex++)
+        // スート分の4回繰り返す(ハート、スペード、ダイヤ、クローバー)
+        for (int suitIndex = 0; suitIndex < SuitCount; suitIndex++)
         {
             foreach (string rank in ranks)
             {
-                cards.Add(new Card(rank));
+                Cards.Add(new Card(rank));
             }
         }
     }
     /// <summary>
-    /// シャッフルするメソッド
+    /// シャッフルする
     /// </summary>
     public void Shuffle()
     {
         Random random = new Random();
-        for (int currentIndex  = cards.Count -1; currentIndex > 0; currentIndex--)
+        for (int i  = Cards.Count -1; i > 0; i--)
         {
-            int randomIndex = random.Next(currentIndex + 1); 
-            // 入れ替え処理
-            Card temp = cards[currentIndex];
-            cards[currentIndex] = cards[randomIndex];
-            cards[randomIndex] = temp;
+            int randomIndex = random.Next(i + 1); 
+            // 入れ替え処理(まだ混ぜていないカードの中だけランダムに入れ替えるため、後ろから順に処理する)
+            Card temp = Cards[i];
+            Cards[i] = Cards[randomIndex];
+            Cards[randomIndex] = temp;
         }
     }
 
     /// <summary>
-    /// カードを引くメソッド
+    /// カードを引く
     /// </summary>
     /// <returns></returns>
     public Card DrawCard()
     {
-        int lastIndex = cards.Count - 1;
-        Card drawnCard = cards[lastIndex];
+        int lastIndex = Cards.Count - 1;
+        Card drawnCard = Cards[lastIndex];
         // 山札から削除
-        cards.RemoveAt(lastIndex);
+        Cards.RemoveAt(lastIndex);
         return drawnCard;
     }
 }

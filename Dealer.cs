@@ -1,4 +1,3 @@
-using System.Diagnostics.Contracts;
 using System.Text;
 /// <summary>
 /// ディーラーの行動
@@ -14,7 +13,7 @@ public class Dealer : PlayerBase
     /// <param name="deck"></param>
     public bool PlayTurn(Deck deck)
     {
-        Console.WriteLine("⭐︎⭐︎⭐︎ディーラーのターンです⭐︎⭐︎⭐︎");
+        Console.WriteLine("---ディーラーのターンです---");
         ShowHandStatus("ディーラーのターン開始: ");
 
         while(CalculateHandValue() < 17)
@@ -26,7 +25,7 @@ public class Dealer : PlayerBase
             // バーストしたら終了
             if(IsBurst())
             {
-                Console.WriteLine("21点を超えてしまいました！プレイヤーの勝ちです");
+                Console.WriteLine("21点を超えました！プレイヤーの勝ちです");
                 return false;
             }
         }
