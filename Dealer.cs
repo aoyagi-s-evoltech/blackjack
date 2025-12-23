@@ -13,7 +13,7 @@ public class Dealer : PlayerBase
     /// <param name="deck"></param>
     public bool PlayTurn(Deck deck)
     {
-        Console.WriteLine("---ディーラーのターンです---");
+        Console.WriteLine(GameManager.DealerTurnMessage);
         ShowHandStatus("ディーラーのターン開始: ");
 
         while(CalculateHandValue() < 17)
@@ -38,7 +38,7 @@ public class Dealer : PlayerBase
     /// ディーラーの手札と点数を表示
     /// </summary>
     /// <param name="header">表示の先頭に出す文字列</param>
-    private void ShowHandStatus(string header = "ディーラーの手札: ")
+    private void ShowHandStatus(string header = GameManager.DealerHandLabel)
     {
         var sb = new StringBuilder();
         sb.AppendLine(header);

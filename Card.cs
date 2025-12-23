@@ -1,4 +1,7 @@
-﻿/// <summary>
+﻿using System.Drawing;
+
+
+/// <summary>
 /// トランプのカードを表すクラス
 /// </summary>
 public class Card
@@ -11,7 +14,7 @@ public class Card
     /// <summary>
     /// カードの点数(A=1, 数字はそのまま, J/Q/K=10) 
     /// </summary>
-    public int Value {get;}  
+    public int PointValue {get;}  
 
     /// <summary>
     /// コンストラクタ:カードの生成時ランクを渡す
@@ -20,7 +23,7 @@ public class Card
     public Card(string rank)
     {
         Rank = rank;
-        Value = CalculateValue(rank);
+        PointValue = CalculateValue(rank);
     }
 
     /// <summary>

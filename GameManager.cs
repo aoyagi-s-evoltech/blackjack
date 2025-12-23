@@ -1,3 +1,4 @@
+using System.Reflection;
 using System.Text;
 
 /// <summary>
@@ -8,11 +9,12 @@ public class GameManager
 {
     private const string WelcomeMessage = "==ブラックジャックへようこそ！==";
     private const string StartMessage = "ゲームを開始します\n";
-    private const string PlayerHandLabel = "プレイヤーの手札:";
-    private const string DealerHandLabel = "ディーラーの手札:";
+    public const string PlayerHandLabel = "プレイヤーの手札:";
+    public const string DealerHandLabel = "ディーラーの手札:";
     private const string HiddenCardMessage = "もう1枚は伏せられています";
-    private const string PlayerTurnMessage = "---あなたのターンです---";
-    private const string DealerTurnMessage = "---ディーラーのターンです---";
+    public const string PlayerTurnMessage = "---プレイヤーのターンです---";
+    public const string DealerTurnMessage = "---ディーラーのターンです---";
+    private const string RevealDealerCardMessage = "ディーラーのカードを公開します:";
 
 
     /// <summary>
@@ -23,31 +25,22 @@ public class GameManager
     /// <summary>
     /// ゲームで使用するデッキ
     /// </summary>
-    private Deck Deck;
+    private Deck Deck = new Deck();
 
     /// <summary>
     /// プレイヤー
     /// </summary>
-    private Player Player;
+    private Player Player = new Player();
 
     /// <summary>
     /// ディーラー
     /// </summary>
-    private Dealer Dealer;
+    private Dealer Dealer = new Dealer();
 
-    /// <summary>
-    /// コンストラクタ:デッキとプレイヤー・ディーラーを初期化
-    /// </summary>
-    public GameManager()
-    {
-        Deck = new Deck();
-        Player = new Player();
-        Dealer = new Dealer();
-    }
     /// <summary>
     /// 指定の枚数を手札に配る
     /// </summary>
-    /// <param name="hand">カードを受け取る対象者</param>
+    /// <param name="participant">カードを受け取る対象者</param>
     /// <param name="count">配る枚数</param>
     private void DealCards(PlayerBase participant, int count)
     {
@@ -62,8 +55,8 @@ public class GameManager
     /// </summary>
     public void StartGame()
     {
-        Console.WriteLine("==ブラックジャックへようこそ！==");
-        Console.WriteLine("ゲームを開始します\n");
+        Console.WriteLine(WelcomeMessage);
+        Console.WriteLine(StartMessage);
         // プレイヤーに2枚
         DealCards(Player, InitialHandCount);
         // ディーラーに2枚
@@ -73,7 +66,7 @@ public class GameManager
         var sb = new StringBuilder();
 
         // プレイヤーの手札を表示
-        sb.AppendLine("プレイヤーの手札:");
+        sb.AppendLine(PlayerHandLabel);
         foreach (Card card in Player.Hand)
         {
             sb.AppendLine(card.ToString());
@@ -82,9 +75,9 @@ public class GameManager
         sb.AppendLine($"プレイヤーの点数: {Player.CalculateHandValue()}");
 
         // ディーラーの手札を表示
-        sb.AppendLine("ディーラーの手札:");
+        sb.AppendLine(DealerHandLabel);
         sb.AppendLine(Dealer.Hand[0].ToString());
-        sb.AppendLine("もう1枚は伏せられています");
+        sb.AppendLine(HiddenCardMessage);
 
         // 出力
         Console.WriteLine(sb.ToString());
@@ -95,7 +88,7 @@ public class GameManager
     /// </summary>
     public bool PlayerTurn()
     {
-        Console.WriteLine("---あなたのターンです---");
+        Console.WriteLine(PlayerTurnMessage);
         return Player.PlayerTurn(Deck);
     }
 
@@ -104,11 +97,11 @@ public class GameManager
     /// </summary>
     public bool DealerTurn()
     {
-        Console.WriteLine("---ディーラーのターンです---");
+        Console.WriteLine(DealerTurnMessage);
         var sb = new StringBuilder();
 
         // 伏せていたカードを公開
-        sb.AppendLine("ディーラーのカードを公開します:");
+        sb.AppendLine(RevealDealerCardMessage);
         foreach (Card card in Dealer.Hand)
         {
             sb.AppendLine(card.ToString());
@@ -120,7 +113,7 @@ public class GameManager
         // ディーラーがバーストしていなければ、最終的な手札と点数を表示
         if(DealerAlive)
         {
-            sb.AppendLine("ディーラーの手札:");
+            sb.AppendLine(DealerHandLabel);
             foreach (Card card in Dealer.Hand)
             {
                 sb.AppendLine(card.ToString());

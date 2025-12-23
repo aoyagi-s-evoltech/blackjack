@@ -14,7 +14,7 @@ public class Player : PlayerBase
     /// <returns>true: バーストせずターン終了 / false: バーストして負け</returns>
     public bool PlayerTurn(Deck deck)
     {
-        Console.WriteLine("--- プレイヤーのターンです ---");
+        Console.WriteLine(GameManager.PlayerTurnMessage);
         ShowHandStatus("プレイヤーのターン開始: ");
 
         // プレイヤーがヒットするかスタンドするかを選択
@@ -56,7 +56,7 @@ public class Player : PlayerBase
     /// プレイヤーの手札と点数を表示
     /// </summary>
     /// <param name="header">最初に出す文字列</param>
-    private void ShowHandStatus(string header = "プレイヤーの手札: ")
+    private void ShowHandStatus(string header = GameManager.PlayerHandLabel)
     {
         var sb = new StringBuilder();
         sb.AppendLine(header);
