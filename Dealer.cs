@@ -1,10 +1,15 @@
-using System.Text;
 /// <summary>
 /// ディーラーの行動を管理するクラス
 /// 手札の合計が17以上になるまでカードを引き続ける
 /// </summary>
 public class Dealer : PlayerBase
 {
+    /// <summary>
+    /// ディーラーが追加でカードを引くかどうかの基準
+    /// 17以上ならスタンド、16以下ならヒット
+    /// </summary>
+    private const int DealerStandThreshold = 17;
+
     /// <summary>
     /// ディーラーのターンを進める
     /// 手札が17点以上になるまでカードを引き続ける
@@ -14,43 +19,23 @@ public class Dealer : PlayerBase
     /// <returns>true: スタンドしてターン終了 / false: バーストして負け</returns>
     public bool PlayTurn(Deck deck)
     {
-        Console.WriteLine(GameManager.DealerTurnMessage);
-        ShowHandStatus("ディーラーのターン開始: ");
-
-        while(CalculateHandValue() < 17)
+        while (CalculateHandValue() < DealerStandThreshold)
         {
-            Console.WriteLine("ディーラーはカードを引きます");
-            // デッキから1枚引いて手札に追加
             AddCard(deck.DrawCard());
-            ShowHandStatus();
 
-            // バーストしたら終了
-            if(IsBurst())
+            if (IsBurst())
             {
-                Console.WriteLine("21点を超えました！プレイヤーの勝ちです");
-                return false;
+                return false; 
             }
         }
-        Console.WriteLine("ディーラーはスタンドしました");
         return true;
     }
 
     /// <summary>
-    /// ディーラーの手札と点数を表示
+    /// バースト判定
     /// </summary>
-    /// <param name="header">表示の先頭に出すメッセージ</param>
-    private void ShowHandStatus(string header = GameManager.DealerHandLabel)
+    public bool IsBurst()
     {
-        var sb = new StringBuilder();
-        sb.AppendLine(header);
-
-        // 手札のカードを表示
-        foreach (Card card in Hand)
-        {
-            sb.AppendLine(card.ToString());
-        }
-        // 現在の合計点を表示
-        sb.AppendLine($"ディーラーの点数: {CalculateHandValue()}");
-        Console.WriteLine(sb.ToString());
+        return CalculateHandValue() > 21;
     }
 }

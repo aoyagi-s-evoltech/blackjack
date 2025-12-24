@@ -1,4 +1,3 @@
-using System.Reflection;
 using System.Text;
 
 /// <summary>
@@ -51,7 +50,7 @@ public class GameManager
     }
 
     /// <summary>
-    /// ゲームをスタートさせる
+    /// ゲームをスタートさせる(初期手札の配布と表示)
     /// </summary>
     public void StartGame()
     {
@@ -69,14 +68,14 @@ public class GameManager
         sb.AppendLine(PlayerHandLabel);
         foreach (Card card in Player.Hand)
         {
-            sb.AppendLine(card.ToString());
+            sb.AppendLine(card.Rank);
         }
         // プレイヤーの点数を表示
         sb.AppendLine($"プレイヤーの点数: {Player.CalculateHandValue()}");
 
-        // ディーラーの手札を表示
+        // ディーラーの手札を1枚だけ表示
         sb.AppendLine(DealerHandLabel);
-        sb.AppendLine(Dealer.Hand[0].ToString());
+        sb.AppendLine(Dealer.Hand[0].Rank);
         sb.AppendLine(HiddenCardMessage);
 
         // 出力
@@ -84,12 +83,69 @@ public class GameManager
     }
 
     /// <summary>
-    /// プレイヤーのターンを進める
+    /// プレイヤーのターンを進行する（表示と入力を担当）
     /// </summary>
     public bool PlayerTurn()
     {
-        Console.WriteLine(PlayerTurnMessage);
-        return Player.PlayerTurn(Deck);
+        Console.WriteLine("プレイヤーのターン開始");
+        ShowPlayerHand(Player);
+
+        while (true)
+        {
+            Console.WriteLine("カードを引きますか？ (yes/no)");
+            string input = Console.ReadLine()?.ToLower();
+
+            if (input == "yes")
+            {
+                // プレイヤーは Hit（ロジックのみ）
+                Player.Hit(Deck);
+
+                // 手札を表示（UI は GameManager の責務）
+                ShowPlayerHand(Player);
+
+                // バースト判定（ロジックは Player の責務）
+                if (Player.IsBurst())
+                {
+                    Console.WriteLine("21点を超えました！プレイヤーの負けです");
+                    return false;
+                }
+            }
+            else if (input == "no")
+            {
+                Console.WriteLine("プレイヤーはスタンドしました");
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("入力が正しくありません。yes または no を入力してください。");
+            }
+        }   
+    }
+
+    /// <summary>
+    /// プレイヤーの手札と点数を表示
+    /// </summary>
+    private void ShowPlayerHand(Player player)
+    {
+        Console.WriteLine(PlayerHandLabel);
+        foreach (var card in player.Hand)
+        {
+            Console.WriteLine(card.Rank);
+        }
+        Console.WriteLine($"プレイヤーの点数: {player.CalculateHandValue()}");
+    }
+
+    /// <summary>
+    /// ディーラーの手札と点数を表示
+    /// </summary>
+    private void ShowDealerHand()
+    {
+        Console.WriteLine(DealerHandLabel);
+        foreach (var card in Dealer.Hand)
+        {
+            Console.WriteLine(card.Rank);
+        }
+        Console.WriteLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
     }
 
     /// <summary>
@@ -104,7 +160,7 @@ public class GameManager
         sb.AppendLine(RevealDealerCardMessage);
         foreach (Card card in Dealer.Hand)
         {
-            sb.AppendLine(card.ToString());
+            sb.AppendLine(card.Rank);
         }
 
         // ディーラーのターンを実行
@@ -116,10 +172,16 @@ public class GameManager
             sb.AppendLine(DealerHandLabel);
             foreach (Card card in Dealer.Hand)
             {
-                sb.AppendLine(card.ToString());
+                sb.AppendLine(card.Rank);
             }
             sb.AppendLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
         }
+        else
+        {
+            sb.AppendLine("21点を超えました！プレイヤーの勝ちです");
+        }
+        
+        Console.WriteLine(sb.ToString());
         return DealerAlive;
     }
 

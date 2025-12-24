@@ -2,9 +2,7 @@
 {
     static void Main(string[] args)
     {
-        bool PlayAgain = true;
-
-        while (PlayAgain)
+        while (true)
         {
             GameManager game = new GameManager();
 
@@ -30,9 +28,9 @@
             }
             else
             {
-                PlayAgain = false;
                 Console.WriteLine("ゲームを終了します。また遊んでね！");
+                return;
             }
-        }       
-    }
+        }    
+}
 }

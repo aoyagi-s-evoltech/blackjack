@@ -12,6 +12,7 @@ public class Deck
     /// デッキの中身(変更できない)
     /// </summary>
     private List<Card> Cards = new List<Card>();
+
     /// <summary>
     /// 山札の残り枚数を返すプロパティ
     /// </summary>
@@ -22,6 +23,12 @@ public class Deck
             return Cards.Count;
         }
     }
+
+    /// <summary>
+    /// デッキの中身を読み取り専用で公開
+    /// </summary>
+    public IReadOnlyList<Card> CardsReadOnly => Cards;
+
     /// <summary>
     /// コンストラクタ：トランプのカードを作りシャッフルする
     /// </summary>

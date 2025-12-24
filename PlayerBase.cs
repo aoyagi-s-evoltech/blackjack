@@ -26,7 +26,7 @@ public class PlayerBase
         int total = 0;
         foreach (Card card in Hand)
         {
-            total += card.Value;
+            total += card.PointValue;
         }
         return total;
     }

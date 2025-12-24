@@ -1,7 +1,4 @@
-﻿using System.Drawing;
-
-
-/// <summary>
+﻿/// <summary>
 /// トランプのカードを表すクラス
 /// </summary>
 public class Card
@@ -36,14 +33,5 @@ public class Card
         if (rank == "A") return 1;
         if (rank == "J" || rank == "Q" || rank == "K") return 10;
         return int.Parse(rank);
-    }
-
-    /// <summary>
-    /// カードを文字列として表示
-    /// </summary>
-    /// <returns>カードのランク</returns> 
-    public override string ToString()
-    {
-        return Rank;
     }
 }
