@@ -30,12 +30,4 @@ public class Dealer : PlayerBase
         }
         return true;
     }
-
-    /// <summary>
-    /// バースト判定
-    /// </summary>
-    public bool IsBurst()
-    {
-        return CalculateHandValue() > 21;
-    }
 }

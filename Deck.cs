@@ -1,22 +1,17 @@
-using System;
-using System.Collections.Generic;
-
 /// <summary>
 /// トランプの山札を管理するクラス
 /// </summary>
 public class Deck
 {
+    /// <summary>
+    /// トランプのスート(ハート・スペード・クラブ)の種類数
+    /// </summary>
     private const int SuitCount = 4;
 
     /// <summary>
     /// デッキの中身(変更できない)
     /// </summary>
-    private List<Card> Cards = new List<Card>();
-
-    /// <summary>
-    /// デッキの中身を読み取り専用で公開
-    /// </summary>
-    public IReadOnlyList<Card> CardsReadOnly => Cards;
+    private readonly List<Card> Cards = new List<Card>();
 
     /// <summary>
     /// コンストラクタ：トランプのカードを作りシャッフルする
@@ -61,7 +56,7 @@ public class Deck
     /// <summary>
     /// カードを引く
     /// </summary>
-    /// <returns></returns>
+    /// <returns>引いたカード</returns>
     public Card DrawCard()
     {
         int lastIndex = Cards.Count - 1;

@@ -4,17 +4,46 @@ using System.Text;
 /// ゲームの進行を管理するクラス
 /// </summary>
 public class GameManager
-
 {
+    /// <summary>
+    /// ゲーム開始時に表示する挨拶
+    /// </summary>
     private const string WelcomeMessage = "==ブラックジャックへようこそ！==";
+    
+    /// <summary>
+    /// ゲーム開始時に表示する開始メッセージ
+    /// </summary>
     private const string StartMessage = "ゲームを開始します\n";
+    
+    /// <summary>
+    /// プレイヤーの手札を表示する際のメッセージ
+    /// </summary>
     public const string PlayerHandLabel = "プレイヤーの手札:";
+    
+    /// <summary>
+    /// ディーラーの手札を表示する際のメッセージ
+    /// </summary>
     public const string DealerHandLabel = "ディーラーの手札:";
+    
+    /// <summary>
+    /// ディーラーの2枚目のカードが伏せられていることを示すメッセージ
+    /// </summary>
     private const string HiddenCardMessage = "もう1枚は伏せられています";
+    
+    /// <summary>
+    /// プレイヤーのターン開始時に表示するメッセージ
+    /// </summary>
     public const string PlayerTurnMessage = "---プレイヤーのターンです---";
+    
+    /// <summary>
+    /// ディーラーのターン開始時に表示するメッセージ
+    /// </summary>
     public const string DealerTurnMessage = "---ディーラーのターンです---";
+    
+    /// <summary>
+    /// ディーラーの伏せカードを公開する際のメッセージ
+    /// </summary>
     private const string RevealDealerCardMessage = "ディーラーのカードを公開します:";
-
 
     /// <summary>
     /// ゲーム開始時に配る最初の手札の枚数
@@ -54,15 +83,15 @@ public class GameManager
     /// </summary>
     public void StartGame()
     {
-        Console.WriteLine(WelcomeMessage);
-        Console.WriteLine(StartMessage);
+        // 出力用のStringBuilderを用意
+        var sb = new StringBuilder(); 
+        sb.AppendLine(WelcomeMessage);
+        sb.AppendLine(StartMessage);
+
         // プレイヤーに2枚
         DealCards(Player, InitialHandCount);
         // ディーラーに2枚
         DealCards(Dealer, InitialHandCount);
-
-        // 出力用のStringBuilderを用意
-        var sb = new StringBuilder();
 
         // プレイヤーの手札を表示
         sb.AppendLine(PlayerHandLabel);
@@ -85,23 +114,31 @@ public class GameManager
     /// <summary>
     /// プレイヤーのターンを進行する（表示と入力を担当）
     /// </summary>
+    /// <returns> true:プレイヤーがスタンドした/ false:バーストした</returns>
     public bool PlayerTurn()
     {
         Console.WriteLine("プレイヤーのターン開始");
-        ShowPlayerHand(Player);
+        ShowPlayerHand();
 
         while (true)
         {
             Console.WriteLine("カードを引きますか？ (yes/no)");
-            string input = Console.ReadLine()?.ToLower();
+            string input = Console.ReadLine();
+
+            if (input == null)
+            {
+                Console.WriteLine("入力が確認できませんでした。yes または no を入力してください。");
+                continue;
+            }
+
+            input = input.ToLower();
 
             if (input == "yes")
             {
                 // プレイヤーは Hit（ロジックのみ）
                 Player.Hit(Deck);
-
                 // 手札を表示（UI は GameManager の責務）
-                ShowPlayerHand(Player);
+                ShowPlayerHand();
 
                 // バースト判定（ロジックは Player の責務）
                 if (Player.IsBurst())
@@ -117,7 +154,7 @@ public class GameManager
             }
             else
             {
-                Console.WriteLine("入力が正しくありません。yes または no を入力してください。");
+                Console.WriteLine("yes か no を入力してください。");
             }
         }   
     }
@@ -125,32 +162,20 @@ public class GameManager
     /// <summary>
     /// プレイヤーの手札と点数を表示
     /// </summary>
-    private void ShowPlayerHand(Player player)
+    private void ShowPlayerHand()
     {
         Console.WriteLine(PlayerHandLabel);
-        foreach (var card in player.Hand)
+        foreach (var card in Player.Hand)
         {
             Console.WriteLine(card.Rank);
         }
-        Console.WriteLine($"プレイヤーの点数: {player.CalculateHandValue()}");
-    }
-
-    /// <summary>
-    /// ディーラーの手札と点数を表示
-    /// </summary>
-    private void ShowDealerHand()
-    {
-        Console.WriteLine(DealerHandLabel);
-        foreach (var card in Dealer.Hand)
-        {
-            Console.WriteLine(card.Rank);
-        }
-        Console.WriteLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
+        Console.WriteLine($"プレイヤーの点数: {Player.CalculateHandValue()}");
     }
 
     /// <summary>
     /// ディーラーのターンを進める
     /// </summary>
+    /// <returns> true:ディーラーがバーストせず生存/ false:バースト</returns>
     public bool DealerTurn()
     {
         Console.WriteLine(DealerTurnMessage);
@@ -169,12 +194,8 @@ public class GameManager
         // ディーラーがバーストしていなければ、最終的な手札と点数を表示
         if(DealerAlive)
         {
-            sb.AppendLine(DealerHandLabel);
-            foreach (Card card in Dealer.Hand)
-            {
-                sb.AppendLine(card.Rank);
-            }
-            sb.AppendLine($"ディーラーの点数: {Dealer.CalculateHandValue()}");
+
+            AppendHand(sb, DealerHandLabel, Dealer);
         }
         else
         {
@@ -193,25 +214,44 @@ public class GameManager
         int PlayerScore = Player.CalculateHandValue();
         int DealerScore = Dealer.CalculateHandValue();
 
-        if(PlayerScore > 21)
+        var sb = new StringBuilder();
+
+        if (PlayerScore > 21)
         {
-            Console.WriteLine("プレイヤーはバースト！。ディーラーの勝ち！");
+            sb.AppendLine("プレイヤーはバースト！ディーラーの勝ち！");
         }
         else if (DealerScore > 21)
         {
-            Console.WriteLine("ディーラーはバースト！プレイヤーの勝ち！");
+            sb.AppendLine("ディーラーはバースト！プレイヤーの勝ち！");
         }
         else if (PlayerScore > DealerScore)
         {
-            Console.WriteLine("プレイヤーの勝ち！");
+            sb.AppendLine("プレイヤーの勝ち！");
         }
         else if (DealerScore > PlayerScore)
         {
-            Console.WriteLine("ディーラーの勝ち！");
+            sb.AppendLine("ディーラーの勝ち！");
         }
         else
         {
-            Console.WriteLine("引き分け！");
+            sb.AppendLine("引き分け！");
         }
+        Console.WriteLine(sb.ToString());
+    }
+
+    /// <summary>
+    /// 参加者の手札と点数を StringBuilder に追加する
+    /// </summary>
+    /// <param name="sb">出力先の StringBuilder </param>
+    /// <param name="label">手札のメッセージ（プレイヤー／ディーラー）</param>
+    /// <param name="participant">対象となる参加者（プレイヤー／ディーラー）</param>
+    private void AppendHand(StringBuilder sb, string label, PlayerBase participant)
+    {
+        sb.AppendLine(label);
+        foreach (var card in participant.Hand)
+        {
+            sb.AppendLine(card.Rank);
+        }
+        sb.AppendLine($"{label.Replace("手札", "点数")}: {participant.CalculateHandValue()}");
     }
 }

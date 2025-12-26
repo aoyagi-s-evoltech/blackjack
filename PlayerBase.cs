@@ -9,6 +9,11 @@ public class PlayerBase
     public List<Card> Hand {get;} = new List<Card>();
 
     /// <summary>
+    /// ブラックジャックの上限値（21）
+    /// </summary>
+     protected const int BlackjackLimit = 21;
+
+    /// <summary>
     /// 手札にカードを追加
     /// </summary>
     /// <param name="card">追加するカード</param>
@@ -30,7 +35,7 @@ public class PlayerBase
         }
         return total;
     }
-    
+
     /// <summary>
     /// バースト判定を行う
     /// 手札の合計が21点以上の場合trueを返す
@@ -38,6 +43,6 @@ public class PlayerBase
     /// <returns>true: バースト/false: 続行可能</returns>
     public bool IsBurst()
     {
-        return CalculateHandValue() > 21;
+        return CalculateHandValue() > BlackjackLimit;
     }
 }
