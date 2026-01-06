@@ -76,9 +76,9 @@ public class GameManager
         sb.AppendLine(StartMessage);
 
         // プレイヤーに2枚
-        DealCards(Player, InitialHandCount);
+        DealCards(Player);
         // ディーラーに2枚
-        DealCards(Dealer, InitialHandCount);
+        DealCards(Dealer);
 
         // プレイヤーの手札と点数をまとめて表示
         AppendHand(sb, PlayerHandLabel, Player);
@@ -225,13 +225,12 @@ public class GameManager
     }
 
     /// <summary>
-    /// 指定の枚数を手札に配る
+    /// 初期手札(2枚)を配る
     /// </summary>
     /// <param name="participant">カードを受け取る対象者</param>
-    /// <param name="count">配る枚数</param>
-    private void DealCards(PlayerBase participant, int count)
+    private void DealCards(PlayerBase participant)
     {
-        for(int i = 0; i < count; i++)
+        for(int i = 0; i < InitialHandCount; i++)
         {
             participant.AddCard(Deck.DrawCard());
         }

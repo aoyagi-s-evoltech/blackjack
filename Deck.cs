@@ -60,7 +60,7 @@ public class Deck
     /// デッキの末尾からカードを1枚引く
     /// </summary>
     /// <returns>引いたカード</returns>
-       public Card DrawCard()
+    public Card DrawCard()
     {
         // デッキの1番後ろのカードのインデックスを取得
         int lastIndex = Cards.Count - 1;

@@ -19,8 +19,8 @@
                 }            
             }
             
-            Console.WriteLine("\nもう一度遊びますか？ (yes/それ以外は終了");
-            string input = Console.ReadLine().ToLower();
+            Console.WriteLine("\nもう一度遊びますか？ (yes/それ以外は終了)");
+            string input = Console.ReadLine()?.ToLower();
 
             if (input == "yes")
             {
