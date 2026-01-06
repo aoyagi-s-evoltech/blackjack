@@ -51,19 +51,19 @@ public class GameManager
     private const int InitialHandCount = 2;
 
     /// <summary>
-    /// ゲームで使用するデッキ
+    /// ゲームで使用するデッキ。変更不可。
     /// </summary>
-    private Deck Deck = new Deck();
+    private readonly Deck Deck = new Deck();
 
     /// <summary>
-    /// プレイヤー
+    /// プレイヤーの情報
     /// </summary>
-    private Player Player = new Player();
+    private readonly Player Player = new Player();
 
     /// <summary>
-    /// ディーラー
+    /// ディーラーの情報
     /// </summary>
-    private Dealer Dealer = new Dealer();
+    private readonly Dealer Dealer = new Dealer();
 
     /// <summary>
     /// ゲームをスタートさせる(初期手札の配布と表示)
@@ -104,7 +104,7 @@ public class GameManager
         while (true)
         {
             Console.WriteLine("カードを引きますか？ (yes/no)");
-            string input = Console.ReadLine();
+            string? input = Console.ReadLine();
 
             if (input == null)
             {
