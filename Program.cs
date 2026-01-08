@@ -103,17 +103,16 @@
         
         while(true)
         {
-            string? input = Console.ReadLine().ToLower();
+            string? input = Console.ReadLine()?.ToLower();
 
-            if(input == "yes")
+            if (input == "yes")
             {
                 return true;
             }
-            if(input == "no")
+            else
             {
                 return false;
             }
-            WarnInvalid();
         }
     }
 }

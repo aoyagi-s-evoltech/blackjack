@@ -1,3 +1,5 @@
+using System.Text;
+
 /// <summary>
 /// プレイヤー／ディーラー共通の動きをもつクラス
 /// </summary>
